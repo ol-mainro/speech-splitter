@@ -30,6 +30,6 @@ publish:
 
 # run the streamlit app
 run:
-	streamlit run app.py
+	streamlit run streamlit_app.py
 
 .PHONY: develop test clean build run

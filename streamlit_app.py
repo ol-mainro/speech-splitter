@@ -22,6 +22,58 @@ st.set_page_config(
     layout="wide"
 )
 
+# Initialize session state for authentication
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+def check_password():
+    """Check if user is authenticated or show password dialog"""
+    if not st.session_state.authenticated:
+        # Get password from environment variable
+        required_password = os.getenv("STREAMLIT_PASSWORD")
+        
+        if not required_password:
+            st.error("⚠️ No password configured. Please set STREAMLIT_PASSWORD environment variable.")
+            st.stop()
+        
+        # Create a modal-like dialog using columns
+        st.markdown("""
+        <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        ">
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Password input form
+        st.markdown("## 🔐 Access Required")
+        st.markdown("Please enter the password to access this application:")
+        
+        with st.form("password_form"):
+            password_input = st.text_input("Password:", type="password", placeholder="Enter password...")
+            submitted = st.form_submit_button("🔑 Login", use_container_width=True)
+            
+            if submitted:
+                if password_input == required_password:
+                    st.session_state.authenticated = True
+                    st.rerun()
+                else:
+                    st.error("❌ Invalid password. Please try again.")
+        
+        st.markdown("---")
+        st.markdown("*This application is password protected for security.*")
+        st.stop()
+    
+    return True
+
 def check_openai_key():
     """Check if OpenAI API key is available"""
     if "OPENAI_API_KEY" not in os.environ:
@@ -174,6 +226,9 @@ Sentence Details:
     return zip_buffer.getvalue()
 
 def main():
+    # Check authentication first
+    check_password()
+    
     st.title("🎵 Speech Splitter")
     st.markdown("Upload an audio file to split it into individual sentences with corresponding audio players.")
     
@@ -275,6 +330,11 @@ def main():
     
     # Add sidebar with information
     with st.sidebar:
+        # Logout button
+        if st.button("🚪 Logout", use_container_width=True):
+            st.session_state.authenticated = False
+            st.rerun()
+        
         st.header("ℹ️ About")
         st.markdown("""
         This app uses OpenAI's Whisper model to transcribe audio and split it into individual sentences. 
@@ -292,6 +352,7 @@ def main():
         st.header("🔧 Requirements")
         st.markdown("""
         - OpenAI API key must be set as environment variable
+        - STREAMLIT_PASSWORD must be set as environment variable
         - Supported formats: MP3, WAV, M4A, OGG, MP4, AVI, MOV
         """)
 

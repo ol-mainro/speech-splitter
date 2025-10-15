@@ -19,9 +19,10 @@ Speech Splitter is a command-line tool designed to split a speech audio into sep
 This project now includes a Streamlit web application that provides a user-friendly interface for the speech splitting functionality.
 
 ### Running the Streamlit App
-1. Set your OpenAI API key as an environment variable:
+1. Set your OpenAI API key and password as environment variables:
    ```bash
    export OPENAI_API_KEY="your-api-key-here"
+   export STREAMLIT_PASSWORD="your-secure-password"
    ```
 
 2. Install the dependencies:
@@ -31,16 +32,17 @@ This project now includes a Streamlit web application that provides a user-frien
 
 3. Run the Streamlit app:
    ```bash
-   streamlit run app.py
+   streamlit run streamlit_app.py
    ```
    Or using the Makefile:
    ```bash
    make run
    ```
 
-4. Open your browser to `http://localhost:8501` and upload an audio or video file.
+4. Open your browser to `http://localhost:8501`, enter the password when prompted, and upload an audio or video file.
 
 ### Features
+- **Password Protection**: Secure access control via environment variable
 - **File Upload**: Support for audio (MP3, WAV, M4A, OGG) and video (MP4, AVI, MOV) files
 - **Automatic Transcription**: Uses OpenAI's Whisper model for accurate transcription
 - **Sentence Splitting**: Automatically splits the transcribed text into individual sentences

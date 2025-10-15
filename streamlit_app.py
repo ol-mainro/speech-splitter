@@ -157,17 +157,6 @@ def check_password():
             
             st.markdown("<br>", unsafe_allow_html=True)
             
-            # Create a nice container for the login form
-            st.markdown("""
-            <div style="
-                background-color: #f0f2f6;
-                padding: 2rem;
-                border-radius: 10px;
-                border: 1px solid #e1e5e9;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            ">
-            """, unsafe_allow_html=True)
-            
             st.markdown(f"## {get_text('access_required')}")
             st.markdown(get_text('enter_password'))
             

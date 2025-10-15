@@ -10,6 +10,7 @@ import io
 from pydub import AudioSegment
 from pydub.utils import mediainfo
 import moviepy.editor as mp
+nltk.download('punkt_tab')
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

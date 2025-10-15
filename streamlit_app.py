@@ -66,13 +66,10 @@ TRANSLATIONS = {
             "Automatic language detection",
             "Sentence-by-sentence audio playback",
             "Autoplay functionality",
-            "Download all fragments as ZIP",
-            "Responsive design"
+            "Download all fragments as ZIP"
         ],
         "requirements": "🔧 Requirements",
         "requirements_list": [
-            "OpenAI API key must be set as environment variable",
-            "STREAMLIT_PASSWORD must be set as environment variable",
             "Supported formats: MP3, WAV, M4A, OGG, MP4, AVI, MOV"
         ]
     },
@@ -110,13 +107,10 @@ TRANSLATIONS = {
             "Détection automatique de la langue",
             "Lecture audio phrase par phrase",
             "Fonctionnalité de lecture automatique",
-            "Téléchargement de tous les fragments en ZIP",
-            "Design responsive"
+            "Téléchargement de tous les fragments en ZIP"
         ],
         "requirements": "🔧 Exigences",
         "requirements_list": [
-            "La clé API OpenAI doit être définie comme variable d'environnement",
-            "STREAMLIT_PASSWORD doit être défini comme variable d'environnement",
             "Formats supportés: MP3, WAV, M4A, OGG, MP4, AVI, MOV"
         ]
     }

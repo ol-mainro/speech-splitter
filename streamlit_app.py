@@ -81,7 +81,7 @@ TRANSLATIONS = {
         "invalid_password": "❌ Mot de passe invalide. Veuillez réessayer.",
         "password_protected": "Cette application est protégée par mot de passe pour la sécurité.",
         "speech_splitter_title": "🎵 Diviseur de Discours",
-        "upload_description": "Téléchargez un fichier audio pour le diviser en phrases individuelles avec des lecteurs audio correspondants. Il est préférable que les phrases dites par le locuteur soient séparées de quelques secondes pour une découpe plus fiable.",
+        "upload_description": "Téléchargez un fichier audio pour le diviser en phrases individuelles avec des lecteurs audio correspondants. Il est préférable que les phrases dites par le locuteur soient espacées de quelques secondes pour une découpe plus fiable.",
         "choose_file": "Choisir un fichier audio ou vidéo",
         "upload_help": "Téléchargez un fichier audio ou vidéo pour le diviser en phrases",
         "file_processed": "Fichier traité avec succès!",
@@ -100,7 +100,7 @@ TRANSLATIONS = {
         "time": "Temps:",
         "logout": "🚪 Déconnexion",
         "about": "ℹ️ À Propos",
-        "about_description": "Cette application utilise le modèle Whisper d'OpenAI pour transcrire l'audio et le diviser en phrases individuelles. Chaque phrase obtient son propre lecteur audio pour une pratique d'écoute facile.",
+        "about_description": "Cette application utilise un modèle d’IA pour transcrire l'audio et le diviser en phrases individuelles. Cela permet d'obtenir, à partir d'une session d'enregistrement avec un comédien voix, une liste de fichiers individuels facilement exploitables, nommés en vue du montage d'une scène",
         "features": "Fonctionnalités:",
         "features_list": [
             "Supporte les fichiers audio et vidéo",

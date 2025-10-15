@@ -52,7 +52,7 @@ This project now includes a Streamlit web application that provides a user-frien
 
 ### Download Package Contents
 When you download the ZIP file, it contains:
-- **Individual MP3 files**: Each sentence as a separate audio file (numbered and named)
+- **Individual WAV files**: Each sentence as a separate audio file (numbered and named)
 - **Full transcript**: Complete text transcription as a `.txt` file
 - **Metadata file**: Detailed information including timing data for each sentence
 

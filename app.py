@@ -108,18 +108,18 @@ def process_audio_file(uploaded_file):
 
 def create_audio_player(audio_segment, title, audio_bitrate):
     """Create a base64 encoded audio player for a given audio segment"""
-    with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_file:
-        audio_segment.export(tmp_file.name, format="mp3", bitrate=f"{audio_bitrate}k")
+    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_file:
+        audio_segment.export(tmp_file.name, format="wav")
         
         with open(tmp_file.name, "rb") as audio_file:
             encoded = base64.b64encode(audio_file.read()).decode("utf-8")
-            src = f"data:audio/mp3;base64,{encoded}"
+            src = f"data:audio/wav;base64,{encoded}"
         
         os.unlink(tmp_file.name)
         
         return f"""
         <audio title="{title}" controls style="width: 100%;">
-            <source src="{src}" type="audio/mpeg">
+            <source src="{src}" type="audio/wav">
             Your browser does not support the audio element.
         </audio>
         """
@@ -137,11 +137,11 @@ def create_zip_with_audio_fragments(result):
         for i, (sentence, audio_item) in enumerate(zip(result['sentences'], result['audio_sentences'])):
             # Create a safe filename from the sentence
             safe_sentence = sentence[:50].replace(' ', '_').replace('/', '_').replace('\\', '_').replace('.', '').replace(',', '').replace('?', '').replace('!', '')
-            safe_filename = f"{safe_sentence}.mp3"
+            safe_filename = f"{safe_sentence}.wav"
             
             # Export the audio segment to a temporary file
-            with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp_file:
-                audio_item['audio'].export(tmp_file.name, format="mp3", bitrate=f"{result['audio_bitrate']}k")
+            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_file:
+                audio_item['audio'].export(tmp_file.name, format="wav")
                 
                 # Read the file and add it to the zip
                 with open(tmp_file.name, "rb") as audio_file:
@@ -157,7 +157,7 @@ def create_zip_with_audio_fragments(result):
 Title: {result['title']}
 Language: {result['language']}
 Total Sentences: {len(result['sentences'])}
-Audio Bitrate: {result['audio_bitrate']}k
+Audio Format: WAV (uncompressed)
 
 Sentence Details:
 """
@@ -201,7 +201,7 @@ def main():
             
             with col1:
                 st.write("Download all audio fragments as a zip file containing:")
-                st.write("• Individual MP3 files for each sentence")
+                st.write("• Individual WAV files for each sentence")
                 st.write("• Full transcript as text file")
                 st.write("• Metadata with timing information")
             

@@ -28,4 +28,8 @@ build:
 publish:
 	twine upload dist/*
 
-.PHONY: develop test clean build
+# run the streamlit app
+run:
+	streamlit run app.py
+
+.PHONY: develop test clean build run

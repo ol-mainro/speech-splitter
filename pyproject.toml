@@ -24,6 +24,8 @@ dependencies = [
   "pydub>=0.25.1",
   "nltk>=3.9.1",
   "progress>=1.6",
+  "audioop-lts",
+  "streamlit>=1.28.0",
 ]
 dynamic = ["version"]
 

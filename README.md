@@ -43,6 +43,7 @@ This project now includes a Streamlit web application that provides a user-frien
 
 ### Features
 - **Password Protection**: Secure access control via environment variable
+- **Multilingual Interface**: Available in English and French with easy language switching
 - **File Upload**: Support for audio (MP3, WAV, M4A, OGG) and video (MP4, AVI, MOV) files
 - **Automatic Transcription**: Uses OpenAI's Whisper model for accurate transcription
 - **Sentence Splitting**: Automatically splits the transcribed text into individual sentences

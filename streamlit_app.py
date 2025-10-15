@@ -24,9 +24,114 @@ st.set_page_config(
     layout="wide"
 )
 
-# Initialize session state for authentication
+# Initialize session state for authentication and language
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
+if "language" not in st.session_state:
+    st.session_state.language = "fr"  # Default to French
+
+# Translation dictionary
+TRANSLATIONS = {
+    "en": {
+        "access_required": "🔐 Access Required",
+        "enter_password": "Please enter the password to access this application:",
+        "password_placeholder": "Enter password...",
+        "login_button": "🔑 Login",
+        "invalid_password": "❌ Invalid password. Please try again.",
+        "password_protected": "This application is password protected for security.",
+        "speech_splitter_title": "🎵 Speech Splitter",
+        "upload_description": "Upload an audio file to split it into individual sentences with corresponding audio players.",
+        "choose_file": "Choose an audio or video file",
+        "upload_help": "Upload an audio or video file to split into sentences",
+        "file_processed": "File processed successfully!",
+        "results_for": "Results for:",
+        "language_detected": "Language detected:",
+        "download_fragments": "📥 Download Audio Fragments",
+        "download_description": "Download all audio fragments as a zip file containing:",
+        "individual_files": "• Individual WAV files for each sentence",
+        "transcript_file": "• Full transcript as text file",
+        "metadata_file": "• Metadata with timing information",
+        "download_zip": "📦 Download ZIP",
+        "full_transcript": "📝 Full Transcript",
+        "sentence_audio": "🎧 Sentence-by-Sentence Audio",
+        "enable_autoplay": "Enable Autoplay",
+        "autoplay_help": "Automatically play the next sentence when one ends",
+        "time": "Time:",
+        "logout": "🚪 Logout",
+        "about": "ℹ️ About",
+        "about_description": "This app uses OpenAI's Whisper model to transcribe audio and split it into individual sentences. Each sentence gets its own audio player for easy listening practice.",
+        "features": "Features:",
+        "features_list": [
+            "Supports audio and video files",
+            "Automatic language detection",
+            "Sentence-by-sentence audio playback",
+            "Autoplay functionality",
+            "Download all fragments as ZIP",
+            "Responsive design"
+        ],
+        "requirements": "🔧 Requirements",
+        "requirements_list": [
+            "OpenAI API key must be set as environment variable",
+            "STREAMLIT_PASSWORD must be set as environment variable",
+            "Supported formats: MP3, WAV, M4A, OGG, MP4, AVI, MOV"
+        ]
+    },
+    "fr": {
+        "access_required": "🔐 Accès Requis",
+        "enter_password": "Veuillez entrer le mot de passe pour accéder à cette application:",
+        "password_placeholder": "Entrez le mot de passe...",
+        "login_button": "🔑 Connexion",
+        "invalid_password": "❌ Mot de passe invalide. Veuillez réessayer.",
+        "password_protected": "Cette application est protégée par mot de passe pour la sécurité.",
+        "speech_splitter_title": "🎵 Diviseur de Discours",
+        "upload_description": "Téléchargez un fichier audio pour le diviser en phrases individuelles avec des lecteurs audio correspondants. Il est préférable que les phrases dites par le locuteur soient séparées de quelques secondes pour une découpe plus fiable.",
+        "choose_file": "Choisir un fichier audio ou vidéo",
+        "upload_help": "Téléchargez un fichier audio ou vidéo pour le diviser en phrases",
+        "file_processed": "Fichier traité avec succès!",
+        "results_for": "Résultats pour:",
+        "language_detected": "Langue détectée:",
+        "download_fragments": "📥 Télécharger les Fragments Audio",
+        "download_description": "Téléchargez tous les fragments audio sous forme de fichier zip contenant:",
+        "individual_files": "• Fichiers WAV individuels pour chaque phrase",
+        "transcript_file": "• Transcription complète en fichier texte",
+        "metadata_file": "• Métadonnées avec informations de timing",
+        "download_zip": "📦 Télécharger ZIP",
+        "full_transcript": "📝 Transcription Complète",
+        "sentence_audio": "🎧 Audio Phrase par Phrase",
+        "enable_autoplay": "Activer la Lecture Automatique",
+        "autoplay_help": "Lire automatiquement la phrase suivante quand une se termine",
+        "time": "Temps:",
+        "logout": "🚪 Déconnexion",
+        "about": "ℹ️ À Propos",
+        "about_description": "Cette application utilise le modèle Whisper d'OpenAI pour transcrire l'audio et le diviser en phrases individuelles. Chaque phrase obtient son propre lecteur audio pour une pratique d'écoute facile.",
+        "features": "Fonctionnalités:",
+        "features_list": [
+            "Supporte les fichiers audio et vidéo",
+            "Détection automatique de la langue",
+            "Lecture audio phrase par phrase",
+            "Fonctionnalité de lecture automatique",
+            "Téléchargement de tous les fragments en ZIP",
+            "Design responsive"
+        ],
+        "requirements": "🔧 Exigences",
+        "requirements_list": [
+            "La clé API OpenAI doit être définie comme variable d'environnement",
+            "STREAMLIT_PASSWORD doit être défini comme variable d'environnement",
+            "Formats supportés: MP3, WAV, M4A, OGG, MP4, AVI, MOV"
+        ]
+    }
+}
+
+def get_text(key):
+    """Get translated text for current language"""
+    return TRANSLATIONS[st.session_state.language].get(key, key)
+
+def switch_language():
+    """Switch between languages"""
+    if st.session_state.language == "en":
+        st.session_state.language = "fr"
+    else:
+        st.session_state.language = "en"
 
 def check_password():
     """Check if user is authenticated or show password dialog"""
@@ -45,6 +150,19 @@ def check_password():
         col1, col2, col3 = st.columns([1, 2, 1])
         
         with col2:
+            # Language selector
+            col_lang1, col_lang2 = st.columns([1, 1])
+            with col_lang1:
+                if st.button("🇺🇸 English", key="lang_en"):
+                    st.session_state.language = "en"
+                    st.rerun()
+            with col_lang2:
+                if st.button("🇫🇷 Français", key="lang_fr"):
+                    st.session_state.language = "fr"
+                    st.rerun()
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
             # Create a nice container for the login form
             st.markdown("""
             <div style="
@@ -56,28 +174,28 @@ def check_password():
             ">
             """, unsafe_allow_html=True)
             
-            st.markdown("## 🔐 Access Required")
-            st.markdown("Please enter the password to access this application:")
+            st.markdown(f"## {get_text('access_required')}")
+            st.markdown(get_text('enter_password'))
             
             # Password input form
             with st.form("password_form"):
                 password_input = st.text_input(
                     "Password:", 
                     type="password", 
-                    placeholder="Enter password...",
+                    placeholder=get_text('password_placeholder'),
                     label_visibility="collapsed"
                 )
-                submitted = st.form_submit_button("🔑 Login", use_container_width=True)
+                submitted = st.form_submit_button(get_text('login_button'), use_container_width=True)
                 
                 if submitted:
                     if password_input == required_password:
                         st.session_state.authenticated = True
                         st.rerun()
                     else:
-                        st.error("❌ Invalid password. Please try again.")
+                        st.error(get_text('invalid_password'))
             
             st.markdown("---")
-            st.markdown("*This application is password protected for security.*")
+            st.markdown(f"*{get_text('password_protected')}*")
             
             st.markdown("</div>", unsafe_allow_html=True)
         
@@ -241,14 +359,22 @@ def main():
     # Check authentication first
     check_password()
     
-    st.title("🎵 Speech Splitter")
-    st.markdown("Upload an audio file to split it into individual sentences with corresponding audio players.")
+    # Language selector in the top right
+    col_title, col_lang = st.columns([4, 1])
+    with col_title:
+        st.title(get_text('speech_splitter_title'))
+    with col_lang:
+        if st.button("🇺🇸 EN" if st.session_state.language == "fr" else "🇫🇷 FR"):
+            switch_language()
+            st.rerun()
+    
+    st.markdown(get_text('upload_description'))
     
     # File upload
     uploaded_file = st.file_uploader(
-        "Choose an audio or video file",
+        get_text('choose_file'),
         type=['mp3', 'wav', 'm4a', 'ogg', 'mp4', 'avi', 'mov'],
-        help="Upload an audio or video file to split into sentences"
+        help=get_text('upload_help')
     )
     
     if uploaded_file is not None:
@@ -256,21 +382,21 @@ def main():
         result = process_audio_file(uploaded_file)
         
         if result:
-            st.success("File processed successfully!")
+            st.success(get_text('file_processed'))
             
             # Display results
-            st.subheader(f"Results for: {result['title']}")
-            st.write(f"**Language detected:** {result['language']}")
+            st.subheader(f"{get_text('results_for')} {result['title']}")
+            st.write(f"**{get_text('language_detected')}** {result['language']}")
             
             # Download section
-            st.subheader("📥 Download Audio Fragments")
+            st.subheader(get_text('download_fragments'))
             col1, col2 = st.columns([2, 1])
             
             with col1:
-                st.write("Download all audio fragments as a zip file containing:")
-                st.write("• Individual WAV files for each sentence")
-                st.write("• Full transcript as text file")
-                st.write("• Metadata with timing information")
+                st.write(get_text('download_description'))
+                st.write(get_text('individual_files'))
+                st.write(get_text('transcript_file'))
+                st.write(get_text('metadata_file'))
             
             with col2:
                 # Create and provide download button
@@ -278,7 +404,7 @@ def main():
                 zip_filename = f"{result['title']}_audio_fragments.zip"
                 
                 st.download_button(
-                    label="📦 Download ZIP",
+                    label=get_text('download_zip'),
                     data=zip_data,
                     file_name=zip_filename,
                     mime="application/zip",
@@ -288,16 +414,16 @@ def main():
             st.divider()
             
             # Full text section
-            with st.expander("📝 Full Transcript", expanded=True):
+            with st.expander(get_text('full_transcript'), expanded=True):
                 st.write(result['full_text'])
             
             # Individual sentences with audio players
-            st.subheader("🎧 Sentence-by-Sentence Audio")
+            st.subheader(get_text('sentence_audio'))
             
             # Add autoplay toggle
             col1, col2 = st.columns([1, 4])
             with col1:
-                autoplay = st.checkbox("Enable Autoplay", help="Automatically play the next sentence when one ends")
+                autoplay = st.checkbox(get_text('enable_autoplay'), help=get_text('autoplay_help'))
             
             # Create a container for the audio players
             audio_container = st.container()
@@ -316,7 +442,7 @@ def main():
                         st.markdown(audio_html, unsafe_allow_html=True)
                         
                         # Show timing information
-                        st.caption(f"Time: {audio_item['start_time']:.2f}s - {audio_item['end_time']:.2f}s")
+                        st.caption(f"{get_text('time')} {audio_item['start_time']:.2f}s - {audio_item['end_time']:.2f}s")
                         st.divider()
             
             # Add JavaScript for autoplay functionality if enabled
@@ -343,30 +469,20 @@ def main():
     # Add sidebar with information
     with st.sidebar:
         # Logout button
-        if st.button("🚪 Logout", use_container_width=True):
+        if st.button(get_text('logout'), use_container_width=True):
             st.session_state.authenticated = False
             st.rerun()
         
-        st.header("ℹ️ About")
-        st.markdown("""
-        This app uses OpenAI's Whisper model to transcribe audio and split it into individual sentences. 
-        Each sentence gets its own audio player for easy listening practice.
+        st.header(get_text('about'))
+        st.markdown(get_text('about_description'))
         
-        **Features:**
-        - Supports audio and video files
-        - Automatic language detection
-        - Sentence-by-sentence audio playback
-        - Autoplay functionality
-        - Download all fragments as ZIP
-        - Responsive design
-        """)
+        st.markdown(f"**{get_text('features')}**")
+        for feature in get_text('features_list'):
+            st.markdown(f"- {feature}")
         
-        st.header("🔧 Requirements")
-        st.markdown("""
-        - OpenAI API key must be set as environment variable
-        - STREAMLIT_PASSWORD must be set as environment variable
-        - Supported formats: MP3, WAV, M4A, OGG, MP4, AVI, MOV
-        """)
+        st.header(get_text('requirements'))
+        for requirement in get_text('requirements_list'):
+            st.markdown(f"- {requirement}")
 
 if __name__ == "__main__":
     main()

@@ -36,40 +36,50 @@ def check_password():
             st.error("⚠️ No password configured. Please set STREAMLIT_PASSWORD environment variable.")
             st.stop()
         
-        # Create a modal-like dialog using columns
-        st.markdown("""
-        <div style="
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        ">
-        </div>
-        """, unsafe_allow_html=True)
+        # Create a centered container for the login form
+        st.markdown("<br>", unsafe_allow_html=True)
         
-        # Password input form
-        st.markdown("## 🔐 Access Required")
-        st.markdown("Please enter the password to access this application:")
+        # Use columns to center the login form
+        col1, col2, col3 = st.columns([1, 2, 1])
         
-        with st.form("password_form"):
-            password_input = st.text_input("Password:", type="password", placeholder="Enter password...")
-            submitted = st.form_submit_button("🔑 Login", use_container_width=True)
+        with col2:
+            # Create a nice container for the login form
+            st.markdown("""
+            <div style="
+                background-color: #f0f2f6;
+                padding: 2rem;
+                border-radius: 10px;
+                border: 1px solid #e1e5e9;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">
+            """, unsafe_allow_html=True)
             
-            if submitted:
-                if password_input == required_password:
-                    st.session_state.authenticated = True
-                    st.rerun()
-                else:
-                    st.error("❌ Invalid password. Please try again.")
+            st.markdown("## 🔐 Access Required")
+            st.markdown("Please enter the password to access this application:")
+            
+            # Password input form
+            with st.form("password_form"):
+                password_input = st.text_input(
+                    "Password:", 
+                    type="password", 
+                    placeholder="Enter password...",
+                    label_visibility="collapsed"
+                )
+                submitted = st.form_submit_button("🔑 Login", use_container_width=True)
+                
+                if submitted:
+                    if password_input == required_password:
+                        st.session_state.authenticated = True
+                        st.rerun()
+                    else:
+                        st.error("❌ Invalid password. Please try again.")
+            
+            st.markdown("---")
+            st.markdown("*This application is password protected for security.*")
+            
+            st.markdown("</div>", unsafe_allow_html=True)
         
-        st.markdown("---")
-        st.markdown("*This application is password protected for security.*")
+        # Stop execution to prevent showing the main app
         st.stop()
     
     return True

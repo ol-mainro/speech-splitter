@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=41", "wheel", "setuptools-git-versioning<2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-dir]
+speech_splitter = "speech_splitter"
+
+[project]
+name = "speech-splitter"
+authors = [{ name = "Anatolii Bubenkov", email = "bubenkoff@gmail.com" }]
+description = "A command-line tool to split a speech audio into separate sentences for language learners."
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["language", "speech", "splitter", "sentence", "tool"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "moviepy>=1.0.3",
+  "openai>=1.46.0",
+  "pydub>=0.25.1",
+  "nltk>=3.9.1",
+  "progress>=1.6",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "flake8-pyproject",
+  "flake8",
+  "pytest",
+  "pytest-mock",
+  "pytest-cov",
+  "build",
+  "twine",
+]
+
+[project.scripts]
+speech-split = "speech_splitter.splitter:main"
+
+[project.urls]
+Repository = "https://github.com/bubenkoff/speech-splitter.git"
+Issues = "https://github.com/bubenkoff/speech-splitter/issues"
+
+[tool.black]
+line-length = 127
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.env
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+)
+'''
+
+[tool.flake8]
+max-line-length = 127
+exclude = '.git,__pycache__,build,dist,.env'
+extend-ignore = ['E203']
+
+[tool.coverage.run]
+relative_files = true
+
+[tool.setuptools-git-versioning]
+enabled = true

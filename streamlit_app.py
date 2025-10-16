@@ -100,7 +100,7 @@ TRANSLATIONS = {
         "time": "Temps:",
         "logout": "🚪 Déconnexion",
         "about": "ℹ️ À Propos",
-        "about_description": "Cette application utilise un modèle d’IA pour transcrire l'audio et le diviser en phrases individuelles. Cela permet d'obtenir, à partir d'une session d'enregistrement avec un comédien voix, une liste de fichiers individuels facilement exploitables, nommés en vue du montage d'une scène",
+        "about_description": "Cette application utilise un modèle d’IA pour transcrire l'audio et le diviser en phrases individuelles. Cela permet d'obtenir, à partir d'une session d'enregistrement avec un comédien voix, une liste de fichiers individuels facilement exploitables, nommés en vue du montage d'une scène.",
         "features": "Fonctionnalités:",
         "features_list": [
             "Supporte les fichiers audio et vidéo",
@@ -302,7 +302,7 @@ def create_zip_with_audio_fragments(result):
         for i, (sentence, audio_item) in enumerate(zip(result['sentences'], result['audio_sentences'])):
             # Create a safe filename from the sentence
             safe_sentence = sentence[:50].replace(' ', '_').replace('/', '_').replace('\\', '_').replace('.', '').replace(',', '').replace('?', '').replace('!', '')
-            safe_filename = f"{safe_sentence}.wav"
+            safe_filename = f"{safe_sentence}_{i}.wav"
             
             # Export the audio segment to a temporary file
             with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_file:
